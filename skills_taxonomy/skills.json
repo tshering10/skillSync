@@ -1,0 +1,23 @@
+{
+  "Programming Languages": [
+    "Python", "JavaScript", "TypeScript", "Java", "C++", "C#", "Go", "Rust", "PHP", "Ruby", "Swift", "Kotlin", "SQL", "HTML", "CSS"
+  ],
+  "Backend Frameworks": [
+    "Django", "Django REST Framework", "FastAPI", "Flask", "Express.js", "NestJS", "Node.js", "Spring Boot", "ASP.NET Core", "Laravel", "Ruby on Rails"
+  ],
+  "Frontend Frameworks": [
+    "React", "React.js", "Next.js", "Vue.js", "Angular", "Svelte", "Tailwind CSS", "Bootstrap", "Redux"
+  ],
+  "Databases & Vector Search": [
+    "PostgreSQL", "MySQL", "SQLite", "MongoDB", "Redis", "Elasticsearch", "pgvector", "Pinecone", "ChromaDB", "Qdrant"
+  ],
+  "DevOps, Cloud & Infrastructure": [
+    "Docker", "Docker Compose", "Kubernetes", "AWS", "Azure", "GCP", "Google Cloud", "CI/CD", "GitHub Actions", "GitLab CI", "Terraform", "Nginx", "Linux"
+  ],
+  "AI, Data & Machine Learning": [
+    "Machine Learning", "Deep Learning", "NLP", "Natural Language Processing", "spaCy", "NLTK", "PyTorch", "TensorFlow", "scikit-learn", "Pandas", "NumPy", "SentenceTransformers", "OpenCV", "LangChain"
+  ],
+  "Tools & Methodologies": [
+    "Git", "GitHub", "GitLab", "REST API", "RESTful APIs", "GraphQL", "Celery", "Microservices", "Agile", "Scrum", "Jira", "pytest"
+  ]
+}

@@ -2,4 +2,4 @@ from django.apps import AppConfig
 
 
 class ResumesConfig(AppConfig):
-    name = 'resumes'
+    name = 'apps.resumes'
