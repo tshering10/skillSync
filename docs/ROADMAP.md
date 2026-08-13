@@ -28,7 +28,9 @@ This document tracks current progress, planned phases, known limitations, and re
 - [ ] OpenAPI documentation (`drf-spectacular`)
 - [ ] Security audit (file validation, rate limiting)
 
-### Phase 4 — Differentiators (Week 7+)
+### Phase 4 — Differentiators & AI Generation (Week 7+)
+- [ ] **LLM Integration (OpenAI / Gemini API):** AI Feedback & Personalized Advice Generator based on system skill extraction results
+- [ ] **AI Resume Rewriter:** Tailor resume bullet points specifically to job descriptions
 - [ ] Score history tracking (re-upload iterations)
 - [ ] Bilingual/Nepali resume support
 - [ ] React/Next.js frontend interface
