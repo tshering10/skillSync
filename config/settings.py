@@ -45,8 +45,20 @@ INSTALLED_APPS = [
     'rest_framework',
     'rest_framework_simplejwt',
     'corsheaders',
-
+    'drf_spectacular',
 ]
+
+REST_FRAMEWORK = {
+    'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
+}
+
+SPECTACULAR_SETTINGS = {
+    'TITLE': 'SkillSync API',
+    'DESCRIPTION': 'AI-Powered Resume-Job Description Matcher and Skill Extraction Engine',
+    'VERSION': '1.0.0',
+    'SERVE_INCLUDE_SCHEMA': False,
+    'COMPONENT_SPLIT_REQUEST': True,
+}
 
 MIDDLEWARE = [
     'corsheaders.middleware.CorsMiddleware',

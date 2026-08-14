@@ -15,18 +15,18 @@ This document tracks current progress, planned phases, known limitations, and re
 - [x] Core REST API endpoints
 
 ### Phase 2 — Validation (Week 4)
-- [ ] Build evaluation set (20–30 labeled resume/JD pairs)
-- [ ] Matcher evaluation script (`evaluate_matcher.py`)
-- [ ] Analyze failure cases & tune thresholds
-- [ ] Document benchmark findings
+- [x] Build evaluation set (20–30 labeled resume/JD pairs)
+- [x] Matcher evaluation script (`evaluate_matcher.py`)
+- [x] Analyze failure cases & tune thresholds
+- [x] Document benchmark findings (`docs/BENCHMARK.md`)
 
 ### Phase 3 — Production Hardening (Weeks 5–6)
 - [ ] Move parsing/embedding to Celery tasks
 - [ ] Redis caching for embeddings
 - [ ] Comprehensive unit & integration tests
 - [ ] GitHub Actions CI/CD setup
-- [ ] OpenAPI documentation (`drf-spectacular`)
-- [ ] Security audit (file validation, rate limiting)
+- [x] OpenAPI documentation (`drf-spectacular`) (`/api/docs/`, `/api/redoc/`)
+- [x] Security audit: File size & extension validation (5MB limit, disallowed extensions)
 
 ### Phase 4 — Differentiators & AI Generation (Week 7+)
 - [ ] **LLM Integration (OpenAI / Gemini API):** AI Feedback & Personalized Advice Generator based on system skill extraction results
