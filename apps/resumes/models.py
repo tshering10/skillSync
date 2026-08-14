@@ -1,4 +1,5 @@
 from django.db import models
+from django.conf import settings
 import uuid
 from .validators import validate_resume_file
 
@@ -11,6 +12,14 @@ class Resume(models.Model):
     )
 
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    user = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+        related_name='resumes',
+        null=True,
+        blank=True,
+        help_text="User who uploaded this resume"
+    )
     file = models.FileField(upload_to='resumes/', validators=[validate_resume_file])
     original_filename = models.CharField(max_length=255)
     parsed_text = models.TextField(blank=True, default='')
