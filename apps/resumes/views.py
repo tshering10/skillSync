@@ -4,7 +4,7 @@ from rest_framework.parsers import MultiPartParser, FormParser
 from .models import Resume
 from .serializers import ResumeSerializer, ResumeUploadSerializer
 from .parsers import parse_resume_file
-from apps.matching.services import extract_skills_from_text
+from apps.matching.services import extract_candidate_profile
 
 class ResumeViewSet(viewsets.ModelViewSet):
     queryset = Resume.objects.all().order_by('-created_at')
@@ -30,11 +30,9 @@ class ResumeViewSet(viewsets.ModelViewSet):
             raw_text = parse_resume_file(resume.file.path)
             resume.parsed_text = raw_text
 
-            # Extract skills using spaCy
-            skills = extract_skills_from_text(raw_text)
-            resume.candidate_profile = {
-                "skills": skills,
-            }
+            # Extract full candidate profile (skills, experience, roles, education)
+            profile = extract_candidate_profile(raw_text)
+            resume.candidate_profile = profile
             resume.status = 'parsed'
             resume.save()
 

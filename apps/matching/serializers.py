@@ -8,5 +8,14 @@ class MatchRequestSerializer(serializers.Serializer):
 class MatchResultSerializer(serializers.ModelSerializer):
     class Meta:
         model = MatchResult
-        fields = ['id', 'resume', 'job_description', 'match_score', 'matched_skills', 'missing_skills', 'explanation', 'created_at']
-        read_only_fields = ['id', 'match_score', 'matched_skills', 'missing_skills', 'explanation', 'created_at']
+        fields = [
+            'id', 'resume', 'job_description',
+            'match_score', 'role_score', 'skill_score', 'experience_score', 'semantic_score',
+            'matched_skills', 'missing_skills', 'recommendations', 'explanation',
+            'created_at', 'updated_at'
+        ]
+        read_only_fields = [
+            'id', 'match_score', 'role_score', 'skill_score', 'experience_score', 'semantic_score',
+            'matched_skills', 'missing_skills', 'recommendations', 'explanation',
+            'created_at', 'updated_at'
+        ]

@@ -23,31 +23,24 @@ class MatchViewSet(viewsets.ModelViewSet):
         except (Resume.DoesNotExist, JobDescription.DoesNotExist):
             return Response({"error": "Resume or Job Description not found."}, status=status.HTTP_404_NOT_FOUND)
 
-        resume_skills = (
-            resume.candidate_profile.get('skills', [])
-            if isinstance(resume.candidate_profile, dict)
-            else []
-        )
-
-        job_skills = (
-            job.job_profile.get('skills', [])
-            if isinstance(job.job_profile, dict)
-            else []
-        )
-
         match_data = calculate_match(
-            resume_text=resume.parsed_text,
-            job_text=job.raw_text,
-            resume_skills=resume_skills,
-            job_skills=job_skills
+            candidate_profile=resume.candidate_profile,
+            job_profile=job.job_profile,
+            candidate_text=resume.parsed_text,
+            job_text=job.raw_text
         )
 
         match_result = MatchResult.objects.create(
             resume=resume,
             job_description=job,
             match_score=match_data['match_score'],
+            role_score=match_data.get('role_score', 0.0),
+            skill_score=match_data.get('skill_score', 0.0),
+            semantic_score=match_data.get('semantic_score', 0.0),
+            experience_score=match_data.get('experience_score', 0.0),
             matched_skills=match_data['matched_skills'],
             missing_skills=match_data['missing_skills'],
+            recommendations=match_data.get('recommendations', []),
             explanation=match_data['explanation']
         )
 
