@@ -23,7 +23,7 @@ class Resume(models.Model):
     file = models.FileField(upload_to='resumes/', validators=[validate_resume_file])
     original_filename = models.CharField(max_length=255)
     parsed_text = models.TextField(blank=True, default='')
-    extracted_skills = models.JSONField(default=list, blank=True)
+    candidate_profile = models.JSONField(default=dict, blank=True)
     status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='uploaded')
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)

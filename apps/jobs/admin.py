@@ -4,18 +4,19 @@ from .models import JobDescription
 
 @admin.register(JobDescription)
 class JobDescriptionAdmin(admin.ModelAdmin):
-    list_display = ('title', 'company', 'skill_count', 'created_at')
+    list_display = ('title', 'company', 'user', 'skill_count', 'created_at')
     list_filter = ('created_at',)
-    search_fields = ('title', 'company', 'raw_text')
-    readonly_fields = ('id', 'extracted_skills', 'created_at', 'updated_at')
+    search_fields = ('title', 'company', 'raw_text', 'user__email')
+    readonly_fields = ('id', 'job_profile', 'created_at', 'updated_at')
     ordering = ('-created_at',)
 
     fieldsets = (
-        ('Job Info', {'fields': ('id', 'title', 'company')}),
-        ('Content', {'fields': ('raw_text', 'extracted_skills')}),
+        ('Job Info', {'fields': ('id', 'user', 'title', 'company')}),
+        ('Content', {'fields': ('raw_text', 'job_profile')}),
         ('Timestamps', {'fields': ('created_at', 'updated_at')}),
     )
 
     def skill_count(self, obj):
-        return len(obj.extracted_skills) if obj.extracted_skills else 0
+        skills = obj.job_profile.get('skills', []) if isinstance(obj.job_profile, dict) else []
+        return len(skills)
     skill_count.short_description = '# Skills'

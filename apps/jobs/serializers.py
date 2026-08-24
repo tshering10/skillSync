@@ -4,5 +4,5 @@ from .models import JobDescription
 class JobDescriptionSerializer(serializers.ModelSerializer):
     class Meta:
         model = JobDescription
-        fields = ['id', 'title', 'company', 'raw_text', 'extracted_skills', 'created_at', 'updated_at']
-        read_only_fields = ['id', 'extracted_skills', 'created_at', 'updated_at']
+        fields = ['id', 'user', 'title', 'company', 'raw_text', 'job_profile', 'created_at', 'updated_at']
+        read_only_fields = ['id', 'user', 'job_profile', 'created_at', 'updated_at']

@@ -32,7 +32,9 @@ class ResumeViewSet(viewsets.ModelViewSet):
 
             # Extract skills using spaCy
             skills = extract_skills_from_text(raw_text)
-            resume.extracted_skills = skills
+            resume.candidate_profile = {
+                "skills": skills,
+            }
             resume.status = 'parsed'
             resume.save()
 

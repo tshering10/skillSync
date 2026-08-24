@@ -8,15 +8,17 @@ class JobDescriptionViewSet(viewsets.ModelViewSet):
     queryset = JobDescription.objects.all().order_by('-created_at')
     serializer_class = JobDescriptionSerializer
 
-    def create(self, request, *args, **kwargs):
-        serializer = self.get_serializer(data=request.data)
-        serializer.is_valid(raise_exception=True)
+    def perform_create(self, serializer):
+        user = self.request.user if self.request.user.is_authenticated else None
         
-        job = serializer.save()
-
-        # Extract skills from job description text
-        skills = extract_skills_from_text(job.raw_text)
-        job.extracted_skills = skills
-        job.save()
-
-        return Response(JobDescriptionSerializer(job).data, status=status.HTTP_201_CREATED)
+        # 1. Extract skills from the raw JD text
+        raw_text = serializer.validated_data.get('raw_text', '')
+        skills = extract_skills_from_text(raw_text)
+        
+        # 2. Save job with user association and job_profile
+        serializer.save(
+            user=user,
+            job_profile={
+                "skills": skills,
+            }
+        )
