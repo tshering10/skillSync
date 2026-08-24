@@ -14,7 +14,6 @@ class User(AbstractUser):
     email = models.EmailField(unique=True, help_text="Unique email address used for login.")
     full_name = models.CharField(max_length=255, blank=True, default='')
     role = models.CharField(max_length=20, choices=ROLE_CHOICES, default='candidate')
-    bio = models.TextField(blank=True, default='')
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 

@@ -1,4 +1,4 @@
-from rest_framework import viewsets, status
+from rest_framework import viewsets, status, serializers
 from rest_framework.response import Response
 from rest_framework.parsers import MultiPartParser, FormParser
 from .models import Resume
@@ -11,12 +11,16 @@ class ResumeViewSet(viewsets.ModelViewSet):
     serializer_class = ResumeSerializer
     parser_classes = (MultiPartParser, FormParser)
 
-    def create(self, request, *args, **kwargs):
-        serializer = ResumeUploadSerializer(data=request.data)
-        serializer.is_valid(raise_exception=True)
-        
+    def get_serializer_class(self):
+        if self.action == 'create':
+            return ResumeUploadSerializer
+        return ResumeSerializer
+
+    def perform_create(self, serializer):
         uploaded_file = serializer.validated_data['file']
+        user = self.request.user if self.request.user.is_authenticated else None
         resume = serializer.save(
+            user=user,
             original_filename=uploaded_file.name,
             status='parsing'
         )
@@ -32,12 +36,24 @@ class ResumeViewSet(viewsets.ModelViewSet):
             resume.status = 'parsed'
             resume.save()
 
-            return Response(ResumeSerializer(resume).data, status=status.HTTP_201_CREATED)
-
         except Exception as e:
             resume.status = 'failed'
             resume.save()
-            return Response(
-                {"error": f"Failed to parse resume: {str(e)}", "resume_id": str(resume.id)},
-                status=status.HTTP_400_BAD_REQUEST
-            )
+            raise serializers.ValidationError({
+                "error": f"Failed to parse resume: {str(e)}",
+                "resume_id": str(resume.id)
+            })
+
+    def create(self, request, *args, **kwargs):
+        upload_serializer = self.get_serializer(data=request.data)
+        upload_serializer.is_valid(raise_exception=True)
+        self.perform_create(upload_serializer)
+        
+        # Return the full Resume representation in response
+        resume_instance = upload_serializer.instance
+        headers = self.get_success_headers(upload_serializer.data)
+        return Response(
+            ResumeSerializer(resume_instance).data,
+            status=status.HTTP_201_CREATED,
+            headers=headers
+        )

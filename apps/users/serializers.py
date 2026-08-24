@@ -7,7 +7,7 @@ from .models import User
 class UserProfileSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ['id', 'email', 'username', 'full_name', 'role', 'bio', 'created_at', 'updated_at']
+        fields = ['id', 'email', 'username', 'full_name', 'role', 'created_at', 'updated_at']
         read_only_fields = ['id', 'email', 'created_at', 'updated_at']
 
 
@@ -17,7 +17,7 @@ class RegisterSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = User
-        fields = ['id', 'email', 'username', 'full_name', 'role', 'bio', 'password', 'tokens']
+        fields = ['id', 'email', 'username', 'full_name', 'role', 'password', 'tokens']
         extra_kwargs = {
             'username': {'required': False},
             'full_name': {'required': False},

@@ -1,0 +1,565 @@
+{
+  "info": {
+    "_postman_id": "skillsync-api-collection-v1",
+    "name": "SkillSync API",
+    "description": "Complete Postman collection for SkillSync — AI-Powered Resume-to-Job Matcher.\n\nCovers:\n- 🔐 Auth (register, login, token refresh, profile)\n- 📄 Resumes\n- 💼 Jobs\n- 🧠 Matching\n- 📚 API Docs (Swagger, ReDoc)\n\nBase URL: http://127.0.0.1:8000\nTokens are auto-saved after Register/Login.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "base_url",
+      "value": "http://127.0.0.1:8000",
+      "type": "string",
+      "description": "Base URL of the Django dev server"
+    },
+    {
+      "key": "access_token",
+      "value": "",
+      "type": "string",
+      "description": "JWT access token — auto-set after Login or Register"
+    },
+    {
+      "key": "refresh_token",
+      "value": "",
+      "type": "string",
+      "description": "JWT refresh token — auto-set after Login or Register"
+    }
+  ],
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{access_token}}",
+        "type": "string"
+      }
+    ]
+  },
+  "item": [
+    {
+      "name": "🔐 Auth",
+      "description": "User authentication endpoints — register, login, token refresh, and profile management.\n\nBase path: /api/v1/auth/",
+      "item": [
+        {
+          "name": "Register",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "if (pm.response.code === 201) {",
+                  "    const json = pm.response.json();",
+                  "    if (json.tokens) {",
+                  "        pm.collectionVariables.set('access_token', json.tokens.access);",
+                  "        pm.collectionVariables.set('refresh_token', json.tokens.refresh);",
+                  "        console.log('✅ Tokens auto-saved to collection variables');",
+                  "    }",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"email\": \"john@example.com\",\n    \"password\": \"SecurePass123\",\n    \"username\": \"johndoe\",\n    \"full_name\": \"John Doe\",\n    \"role\": \"candidate\",\n    \"bio\": \"Software engineer with 3 years of experience.\"\n}",
+              "options": { "raw": { "language": "json" } }
+            },
+            "url": {
+              "raw": "{{base_url}}/api/v1/auth/register/",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "auth", "register", ""]
+            },
+            "description": "Register a new user account.\n\n**Required fields:**\n- `email` — unique email address\n- `password` — min 8 characters\n\n**Optional fields:**\n- `username` — defaults to email prefix if omitted\n- `full_name`\n- `role` — `candidate` | `recruiter` | `admin` (default: `candidate`)\n- `bio`\n\n**Response 201:** Returns user profile + JWT `access` & `refresh` tokens."
+          },
+          "response": []
+        },
+        {
+          "name": "Login",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "if (pm.response.code === 200) {",
+                  "    const json = pm.response.json();",
+                  "    if (json.tokens) {",
+                  "        pm.collectionVariables.set('access_token', json.tokens.access);",
+                  "        pm.collectionVariables.set('refresh_token', json.tokens.refresh);",
+                  "        console.log('✅ Tokens auto-saved to collection variables');",
+                  "    }",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"email\": \"john@example.com\",\n    \"password\": \"SecurePass123\"\n}",
+              "options": { "raw": { "language": "json" } }
+            },
+            "url": {
+              "raw": "{{base_url}}/api/v1/auth/login/",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "auth", "login", ""]
+            },
+            "description": "Authenticate with email + password.\n\n**Response 200:** Returns `user` profile object + `tokens` (access & refresh).\n\nTokens are auto-saved to collection variables by the test script."
+          },
+          "response": []
+        },
+        {
+          "name": "Refresh Token",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "if (pm.response.code === 200) {",
+                  "    const json = pm.response.json();",
+                  "    pm.collectionVariables.set('access_token', json.access);",
+                  "    console.log('✅ New access token saved');",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"refresh\": \"{{refresh_token}}\"\n}",
+              "options": { "raw": { "language": "json" } }
+            },
+            "url": {
+              "raw": "{{base_url}}/api/v1/auth/token/refresh/",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "auth", "token", "refresh", ""]
+            },
+            "description": "Exchange a refresh token for a new access token.\n\n**Response 200:** Returns new `access` token. Auto-saved by the test script."
+          },
+          "response": []
+        },
+        {
+          "name": "Get My Profile",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [{ "key": "token", "value": "{{access_token}}", "type": "string" }]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/v1/auth/me/",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "auth", "me", ""]
+            },
+            "description": "Retrieve the currently authenticated user's profile.\n\n**Auth:** Bearer token required.\n\n**Response 200:** `id`, `email`, `username`, `full_name`, `role`, `bio`, `created_at`, `updated_at`."
+          },
+          "response": []
+        },
+        {
+          "name": "Update My Profile (PATCH)",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [{ "key": "token", "value": "{{access_token}}", "type": "string" }]
+            },
+            "method": "PATCH",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"full_name\": \"John Updated Doe\",\n    \"username\": \"john_updated\",\n    \"bio\": \"Updated bio — senior engineer with 5 years experience.\",\n    \"role\": \"recruiter\"\n}",
+              "options": { "raw": { "language": "json" } }
+            },
+            "url": {
+              "raw": "{{base_url}}/api/v1/auth/me/",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "auth", "me", ""]
+            },
+            "description": "Partially update the authenticated user's profile.\n\n**Auth:** Bearer token required.\n\n**Updatable:** `username`, `full_name`, `bio`, `role`\n**Read-only (ignored):** `id`, `email`, `created_at`, `updated_at`"
+          },
+          "response": []
+        },
+        {
+          "name": "Replace My Profile (PUT)",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [{ "key": "token", "value": "{{access_token}}", "type": "string" }]
+            },
+            "method": "PUT",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"username\": \"johndoe\",\n    \"full_name\": \"John Doe\",\n    \"bio\": \"Full profile replacement.\",\n    \"role\": \"candidate\"\n}",
+              "options": { "raw": { "language": "json" } }
+            },
+            "url": {
+              "raw": "{{base_url}}/api/v1/auth/me/",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "auth", "me", ""]
+            },
+            "description": "Full replacement update of the user's profile. All non-read-only fields are required. Use PATCH for partial updates."
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "📄 Resumes",
+      "description": "Resume upload and management.\n\nBase path: /api/v1/resumes/",
+      "item": [
+        {
+          "name": "Upload Resume",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [{ "key": "token", "value": "{{access_token}}", "type": "string" }]
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "file",
+                  "type": "file",
+                  "description": "PDF or DOCX resume file (required)"
+                },
+                {
+                  "key": "title",
+                  "value": "My Software Engineer Resume",
+                  "type": "text",
+                  "description": "Optional display title"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{base_url}}/api/v1/resumes/",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "resumes", ""]
+            },
+            "description": "Upload a new resume (PDF or DOCX). The server parses the file and extracts skills using spaCy NLP.\n\n**Auth:** Bearer token required.\n**Body:** multipart/form-data"
+          },
+          "response": []
+        },
+        {
+          "name": "List My Resumes",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [{ "key": "token", "value": "{{access_token}}", "type": "string" }]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/v1/resumes/",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "resumes", ""]
+            },
+            "description": "List all resumes belonging to the authenticated user."
+          },
+          "response": []
+        },
+        {
+          "name": "Get Resume Detail",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [{ "key": "token", "value": "{{access_token}}", "type": "string" }]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/v1/resumes/:id/",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "resumes", ":id", ""],
+              "variable": [
+                { "key": "id", "value": "", "description": "Resume UUID" }
+              ]
+            },
+            "description": "Retrieve a single resume by its UUID, including parsed skills and extracted text."
+          },
+          "response": []
+        },
+        {
+          "name": "Delete Resume",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [{ "key": "token", "value": "{{access_token}}", "type": "string" }]
+            },
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/v1/resumes/:id/",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "resumes", ":id", ""],
+              "variable": [
+                { "key": "id", "value": "", "description": "Resume UUID" }
+              ]
+            },
+            "description": "Permanently delete a resume by its UUID.\n\n**Response 204:** No content."
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "💼 Jobs",
+      "description": "Job listing CRUD operations.\n\nBase path: /api/v1/jobs/",
+      "item": [
+        {
+          "name": "Create Job",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [{ "key": "token", "value": "{{access_token}}", "type": "string" }]
+            },
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"title\": \"Senior Python Developer\",\n    \"company\": \"TechCorp Inc.\",\n    \"description\": \"We are looking for a senior Python developer with Django and PostgreSQL experience to join our growing team.\",\n    \"location\": \"Remote\",\n    \"job_type\": \"full_time\",\n    \"experience_level\": \"senior\",\n    \"required_skills\": [\"Python\", \"Django\", \"PostgreSQL\", \"REST APIs\", \"Docker\"]\n}",
+              "options": { "raw": { "language": "json" } }
+            },
+            "url": {
+              "raw": "{{base_url}}/api/v1/jobs/",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "jobs", ""]
+            },
+            "description": "Create a new job listing.\n\n**Auth:** Bearer token required."
+          },
+          "response": []
+        },
+        {
+          "name": "List Jobs",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [{ "key": "token", "value": "{{access_token}}", "type": "string" }]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/v1/jobs/",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "jobs", ""]
+            },
+            "description": "List all available job postings."
+          },
+          "response": []
+        },
+        {
+          "name": "Get Job Detail",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [{ "key": "token", "value": "{{access_token}}", "type": "string" }]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/v1/jobs/:id/",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "jobs", ":id", ""],
+              "variable": [
+                { "key": "id", "value": "", "description": "Job UUID" }
+              ]
+            },
+            "description": "Retrieve a single job posting by its UUID."
+          },
+          "response": []
+        },
+        {
+          "name": "Update Job (PATCH)",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [{ "key": "token", "value": "{{access_token}}", "type": "string" }]
+            },
+            "method": "PATCH",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"title\": \"Lead Python Developer\",\n    \"location\": \"Hybrid — NYC\"\n}",
+              "options": { "raw": { "language": "json" } }
+            },
+            "url": {
+              "raw": "{{base_url}}/api/v1/jobs/:id/",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "jobs", ":id", ""],
+              "variable": [
+                { "key": "id", "value": "", "description": "Job UUID" }
+              ]
+            },
+            "description": "Partially update a job listing."
+          },
+          "response": []
+        },
+        {
+          "name": "Delete Job",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [{ "key": "token", "value": "{{access_token}}", "type": "string" }]
+            },
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/v1/jobs/:id/",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "jobs", ":id", ""],
+              "variable": [
+                { "key": "id", "value": "", "description": "Job UUID" }
+              ]
+            },
+            "description": "Delete a job listing by UUID.\n\n**Response 204:** No content."
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "🧠 Matching",
+      "description": "Resume-to-job semantic matching using pgvector + sentence-transformers.\n\nBase path: /api/v1/matching/",
+      "item": [
+        {
+          "name": "Match Resume to Job",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [{ "key": "token", "value": "{{access_token}}", "type": "string" }]
+            },
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"resume_id\": \"<resume-uuid-here>\",\n    \"job_id\": \"<job-uuid-here>\"\n}",
+              "options": { "raw": { "language": "json" } }
+            },
+            "url": {
+              "raw": "{{base_url}}/api/v1/matching/",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "matching", ""]
+            },
+            "description": "Trigger a semantic match between a resume and a job.\n\n**Auth:** Bearer token required.\n\n**Response:** Match score (cosine similarity), matched skills, missing skills, and overall match percentage."
+          },
+          "response": []
+        },
+        {
+          "name": "List Match Results",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [{ "key": "token", "value": "{{access_token}}", "type": "string" }]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/v1/matching/",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "matching", ""]
+            },
+            "description": "List all previous match results for the authenticated user."
+          },
+          "response": []
+        },
+        {
+          "name": "Get Match Detail",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [{ "key": "token", "value": "{{access_token}}", "type": "string" }]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/v1/matching/:id/",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "matching", ":id", ""],
+              "variable": [
+                { "key": "id", "value": "", "description": "Match result UUID" }
+              ]
+            },
+            "description": "Retrieve a specific match result by UUID, including full skill breakdown."
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "📚 API Docs",
+      "description": "Auto-generated interactive API documentation (drf-spectacular).",
+      "item": [
+        {
+          "name": "Swagger UI",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/docs/",
+              "host": ["{{base_url}}"],
+              "path": ["api", "docs", ""]
+            },
+            "description": "Open the interactive Swagger UI — try all endpoints directly in the browser."
+          },
+          "response": []
+        },
+        {
+          "name": "ReDoc",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/redoc/",
+              "host": ["{{base_url}}"],
+              "path": ["api", "redoc", ""]
+            },
+            "description": "Open the ReDoc API reference — clean, readable API documentation."
+          },
+          "response": []
+        },
+        {
+          "name": "OpenAPI Schema (JSON)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/schema/",
+              "host": ["{{base_url}}"],
+              "path": ["api", "schema", ""]
+            },
+            "description": "Download the raw OpenAPI 3.0 schema file."
+          },
+          "response": []
+        }
+      ]
+    }
+  ]
+}
