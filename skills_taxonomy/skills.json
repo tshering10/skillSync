@@ -1,23 +1,148 @@
 {
   "Programming Languages": [
-    "Python", "JavaScript", "TypeScript", "Java", "C++", "C#", "Go", "Rust", "PHP", "Ruby", "Swift", "Kotlin", "SQL", "HTML", "CSS"
+    "Python",
+    "JavaScript",
+    "TypeScript",
+    "Java",
+    "C++",
+    "C#",
+    "Go",
+    "Rust",
+    "PHP",
+    "Ruby",
+    "Swift",
+    "Kotlin",
+    "SQL",
+    "HTML",
+    "CSS"
   ],
+
   "Backend Frameworks": [
-    "Django", "Django REST Framework", "FastAPI", "Flask", "Express.js", "NestJS", "Node.js", "Spring Boot", "ASP.NET Core", "Laravel", "Ruby on Rails"
+    "Django",
+    "Django REST Framework",
+    "FastAPI",
+    "Flask",
+    "Express.js",
+    "NestJS",
+    "Node.js",
+    "Spring Boot",
+    "ASP.NET Core",
+    "Laravel",
+    "Ruby on Rails"
   ],
+
   "Frontend Frameworks": [
-    "React", "React.js", "Next.js", "Vue.js", "Angular", "Svelte", "Tailwind CSS", "Bootstrap", "Redux"
+    "React",
+    "React.js",
+    "Next.js",
+    "Vue.js",
+    "Angular",
+    "Svelte",
+    "Tailwind CSS",
+    "Bootstrap",
+    "Redux"
   ],
-  "Databases & Vector Search": [
-    "PostgreSQL", "MySQL", "SQLite", "MongoDB", "Redis", "Elasticsearch", "pgvector", "Pinecone", "ChromaDB", "Qdrant"
+
+  "Databases & Data Storage": [
+    "PostgreSQL",
+    "MySQL",
+    "SQLite",
+    "MongoDB",
+    "Redis",
+    "Elasticsearch",
+    "SQL Server",
+    "Oracle",
+    "MariaDB"
   ],
+
+  "Vector Databases & Search": [
+    "pgvector",
+    "Pinecone",
+    "ChromaDB",
+    "Qdrant",
+    "Weaviate",
+    "FAISS"
+  ],
+
   "DevOps, Cloud & Infrastructure": [
-    "Docker", "Docker Compose", "Kubernetes", "AWS", "Azure", "GCP", "Google Cloud", "CI/CD", "GitHub Actions", "GitLab CI", "Terraform", "Nginx", "Linux"
+    "Docker",
+    "Docker Compose",
+    "Kubernetes",
+    "AWS",
+    "Azure",
+    "GCP",
+    "Google Cloud",
+    "CI/CD",
+    "GitHub Actions",
+    "GitLab CI",
+    "Jenkins",
+    "Terraform",
+    "Ansible",
+    "Nginx",
+    "Linux"
   ],
+
   "AI, Data & Machine Learning": [
-    "Machine Learning", "Deep Learning", "NLP", "Natural Language Processing", "spaCy", "NLTK", "PyTorch", "TensorFlow", "scikit-learn", "Pandas", "NumPy", "SentenceTransformers", "OpenCV", "LangChain"
+    "Machine Learning",
+    "Deep Learning",
+    "NLP",
+    "Natural Language Processing",
+    "spaCy",
+    "NLTK",
+    "PyTorch",
+    "TensorFlow",
+    "scikit-learn",
+    "Pandas",
+    "NumPy",
+    "SentenceTransformers",
+    "OpenCV",
+    "LangChain",
+    "Matplotlib",
+    "Seaborn",
+    "Jupyter Notebook",
+    "Jupyter",
+    "XGBoost",
+    "LightGBM",
+    "Hugging Face",
+    "Transformers"
   ],
+
+  "Data Analysis & Business Intelligence": [
+    "Excel",
+    "Microsoft Excel",
+    "Power BI",
+    "Tableau",
+    "Statistical Analysis",
+    "Statistics",
+    "Data Analysis",
+    "Data Visualization",
+    "Data Cleaning",
+    "Exploratory Data Analysis",
+    "Feature Engineering"
+  ],
+
+  "APIs & Architecture": [
+    "REST API",
+    "RESTful APIs",
+    "GraphQL",
+    "WebSockets",
+    "gRPC",
+    "Microservices",
+    "Distributed Systems",
+    "Event-Driven Architecture",
+    "Message Queues"
+  ],
+
   "Tools & Methodologies": [
-    "Git", "GitHub", "GitLab", "REST API", "RESTful APIs", "GraphQL", "Celery", "Microservices", "Agile", "Scrum", "Jira", "pytest"
+    "Git",
+    "GitHub",
+    "GitLab",
+    "Celery",
+    "Agile",
+    "Scrum",
+    "Jira",
+    "pytest",
+    "Postman",
+    "CI/CD"
   ]
 }
